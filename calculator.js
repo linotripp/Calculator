@@ -20,49 +20,21 @@ function calculate() {
 myTextArea.addEventListener("keydown", (e) => {
   const lastChar = myTextArea.value.slice(-1);
 
-  const numbersPlus = [
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "(",
-    ")",
-    "Backspace",
-    "ArrowLeft",
-    "ArrowRight",
-    "Delete",
-  ];
+  const isNumber = /^[0-9]$/.test(e.key);
+  const isControl = ["Backspace", "ArrowLeft", "ArrowRight", "Delete"].includes(
+    e.key
+  );
+  const operatorPattern = /^[\^\/\*\-\+\(\)\.]$/;
 
-  const operators = [".", "+", "-", "*", "/", "^"];
+  const isOperator = operatorPattern.test(e.key);
+  const lastWasOperator = operatorPattern.test(lastChar);
 
-  const allAllowed = [...numbersPlus, ...operators];
-
-  const isOperator = operators.includes(e.key);
-  const lastWasOperator = operators.includes(lastChar);
-
-  // Handle double operators
   if (isOperator && lastWasOperator) {
-    if (e.key === lastChar) {
-      // block same operator
-      e.preventDefault();
-      return;
-    } else {
-      // replace last operator with new one
-      e.preventDefault();
-      myTextArea.value = myTextArea.value.slice(0, -1) + e.key;
-      return;
-    }
+    e.preventDefault();
+    myTextArea.value = myTextArea.value.slice(0, -1) + e.key;
+  } else if (isNumber || isControl || isOperator) {
+    return;
+  } else {
+    e.preventDefault();
   }
-
-  // Allow all other keys in the allowed list
-  if (allAllowed.includes(e.key)) return;
-
-  // Block everything else
-  e.preventDefault();
 });
