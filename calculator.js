@@ -39,7 +39,7 @@ myTextArea.addEventListener("keydown", (e) => {
     "Delete",
   ];
 
-  const operators = [".", "+", "-", "*", "/"];
+  const operators = [".", "+", "-", "*", "/", "^"];
 
   const allAllowed = [...numbersPlus, ...operators];
 
